@@ -21,7 +21,7 @@ while True:
   if (GPIO.input(SWITCH)):
     snap = 0
     while snap < 4:
-      print("pose!")
+      print 'Pose for photo {}'.format(snap)
       GPIO.output(BUTTON_LED, False)
       GPIO.output(POSE_LED, True)
       time.sleep(1.5)
@@ -36,11 +36,15 @@ while True:
         GPIO.output(POSE_LED, True)
         time.sleep(0.1)
       GPIO.output(POSE_LED, False)
-      print("SNAP")
+      print 'Snapping photo {}'.format(snap)
       gpout = subprocess.check_output("gphoto2 --capture-image-and-download --filename /home/pi/photobooth_images/photobooth%H%M%S.jpg", stderr=subprocess.STDOUT, shell=True)
       print(gpout)
-      if "ERROR" not in gpout: 
+      if "ERROR" not in gpout:
+	    print 'Increasing snap count'
         snap += 1
+	  else
+	    print 'Increasing snap count after error'
+		snap += 1
       GPIO.output(POSE_LED, False)
       time.sleep(0.5)
     print("please wait while your photos print...")
